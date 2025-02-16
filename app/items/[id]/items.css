@@ -1,0 +1,11 @@
+.item-wrapper {
+  @apply relative;
+}
+
+.item-image {
+  @apply absolute top-0 right-0;
+}
+
+.item-description {
+  @apply mt-2 mb-4 pr-40;
+}
