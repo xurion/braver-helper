@@ -1,0 +1,15 @@
+.armor-wrapper {
+  @apply relative;
+}
+
+.armor-image {
+  @apply absolute top-0 right-0;
+}
+
+.armor-description {
+  @apply mb-4 pr-40;
+}
+
+.armor-level {
+  @apply text-red-600 font-bold mb-2;
+}
