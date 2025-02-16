@@ -1,0 +1,39 @@
+.enemy-wrapper {
+  @apply relative;
+}
+
+.enemy-image {
+  @apply absolute top-0 right-0;
+}
+
+.enemy-level {
+  @apply text-red-600 font-bold mb-2;
+}
+
+.enemy-description {
+  @apply mb-4 pr-40;
+}
+
+.items {
+  .item {
+    @apply cursor-pointer;
+    @apply p-2;
+
+    @apply hover:bg-red-100;
+
+    .item-image {
+      @apply inline-block;
+      @apply mr-2;
+      @apply size-8;
+    }
+  }
+}
+
+.stats {
+  .stat {
+    .key {
+      @apply inline-block;
+      @apply min-w-12;
+    }
+  }
+}
