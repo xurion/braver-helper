@@ -5,7 +5,9 @@ import Image from "next/image";
 // import { useRouter } from "next/navigation";
 
 import armors from "@/game/www/data/Armors.json";
+import enemies from "@/game/www/data/Enemies.json";
 import "./armors.css";
+import Link from "next/link";
 
 const GEAR_SLOT_REGEXP =
   /Arrow|Earring|Grip|Light Armor|Necklace|Relic|Ring|Tools/;
@@ -56,6 +58,15 @@ function getSlotName(eTypeId: number) {
   return SLOT_NAMES[eTypeId];
 }
 
+function getDroppedBy(armourName: string) {
+  return enemies.filter((enemy) => {
+    const dropsNode = enemy?.note.match(
+      /<Enemy Drops>([\s\S]*?)<\/Enemy Drops>/
+    )?.[1];
+    return dropsNode?.includes(armourName);
+  });
+}
+
 export default function Armor() {
   const params = useParams();
   // const router = useRouter();
@@ -76,11 +87,9 @@ export default function Armor() {
   return (
     <div className="armor-wrapper">
       <h1>{armor.name}</h1>
-
       <p className="armor-level">
         {level} {getSlotName(armor.etypeId)}
       </p>
-
       <Image
         src={`/api/images/items/${armor.iconIndex}`}
         alt={armor.name}
@@ -90,7 +99,24 @@ export default function Armor() {
       />
       <p className="armor-description">{description}</p>
 
-      {jobs && <p className="jobs">{jobs}</p>}
+      <div className="section">
+        <h2>Jobs</h2>
+        {jobs && <p className="jobs">{jobs}</p>}
+      </div>
+
+      <div className="section">
+        <h2>Dropped From</h2>
+        <ul>
+          {getDroppedBy(armor.name).map(
+            (enemy, i) =>
+              enemy && (
+                <li key={i}>
+                  <Link href={`/enemies/${enemy.id}`}>{enemy.name}</Link>
+                </li>
+              )
+          )}
+        </ul>
+      </div>
     </div>
   );
 }
