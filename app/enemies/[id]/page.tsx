@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import enemies from "@/game/www/data/Enemies.json";
 import items from "@/game/www/data/Items.json";
-import armours from "@/game/www/data/Armors.json";
+import armors from "@/game/www/data/Armors.json";
 import weapons from "@/game/www/data/Weapons.json";
 import "./enemies.css";
 
@@ -44,21 +44,44 @@ function parseEnemyNote(note: string) {
   };
 }
 
-function getItemData(itemName: string) {
+type Armor = NonNullable<(typeof armors)[number]>;
+type Item = NonNullable<(typeof items)[number]>;
+type Weapon = NonNullable<(typeof weapons)[number]>;
+
+type GetItemDataArmorResult = {
+  category: "armors";
+  item: Armor;
+};
+type GetItemDataItemResult = {
+  category: "items";
+  item: Item;
+};
+type GetItemDataWeaponResult = {
+  category: "weapons";
+  item: Weapon;
+};
+type GetItemDataResult =
+  | GetItemDataArmorResult
+  | GetItemDataItemResult
+  | GetItemDataWeaponResult;
+
+function getItemData(itemName: string): GetItemDataResult {
   const fromItems = items.find((i) => i?.name === itemName);
   if (fromItems) {
-    return fromItems;
+    return { category: "items", item: fromItems };
   }
 
-  const fromArmours = armours.find((i) => i?.name === itemName);
-  if (fromArmours) {
-    return fromArmours;
+  const fromArmors = armors.find((i) => i?.name === itemName);
+  if (fromArmors) {
+    return { category: "armors", item: fromArmors };
   }
 
   const fromWeapons = weapons.find((i) => i?.name === itemName);
   if (fromWeapons) {
-    return fromWeapons;
+    return { category: "weapons", item: fromWeapons };
   }
+
+  throw new Error("Unable to find armor, item or weapon");
 }
 
 export default function Enemy() {
@@ -78,14 +101,12 @@ export default function Enemy() {
 
   const parsedNote = parseEnemyNote(enemy.note);
 
-  console.log({ enemy, parsedNote });
-
   return (
     <div className="enemy-wrapper">
       <h1>{enemy.name}</h1>
 
       <p className="enemy-level">
-        Lv {parsedNote.minLevel}
+        Lv.{parsedNote.minLevel}
         {parsedNote.minLevel !== parsedNote.maxLevel
           ? ` - ${parsedNote.maxLevel}`
           : ""}
@@ -106,9 +127,13 @@ export default function Enemy() {
         {parsedNote.drops ? (
           <ul className="items">
             {parsedNote.drops.map((drop, i) => {
-              const item = drop.name ? getItemData(drop.name) : undefined;
+              if (!drop.name) {
+                return null;
+              }
+
+              const { category, item } = getItemData(drop.name);
               const onClick = item
-                ? () => router.push(`/items/${item.id}`)
+                ? () => router.push(`/${category}/${item.id}`)
                 : undefined;
               return (
                 <li className="item" key={i} onClick={onClick}>
