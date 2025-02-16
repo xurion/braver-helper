@@ -16,10 +16,12 @@
 
 .items {
   .item {
-    @apply cursor-pointer;
     @apply p-2;
 
-    @apply hover:bg-red-100;
+    &.clickable {
+      @apply cursor-pointer;
+      @apply hover:bg-red-100;
+    }
 
     .item-image {
       @apply inline-block;

@@ -60,10 +60,14 @@ type GetItemDataWeaponResult = {
   category: "weapons";
   item: Weapon;
 };
+type GetItemDataUnknownResult = {
+  category: "unknown";
+};
 type GetItemDataResult =
   | GetItemDataArmorResult
   | GetItemDataItemResult
-  | GetItemDataWeaponResult;
+  | GetItemDataWeaponResult
+  | GetItemDataUnknownResult;
 
 function getItemData(itemName: string): GetItemDataResult {
   const fromItems = items.find((i) => i?.name === itemName);
@@ -81,7 +85,7 @@ function getItemData(itemName: string): GetItemDataResult {
     return { category: "weapons", item: fromWeapons };
   }
 
-  throw new Error("Unable to find armor, item or weapon");
+  return { category: "unknown" };
 }
 
 export default function Enemy() {
@@ -112,7 +116,9 @@ export default function Enemy() {
           : ""}
       </p>
 
-      <p className="enemy-description">{parsedNote.description}</p>
+      {parsedNote.description && (
+        <p className="enemy-description">{parsedNote.description}</p>
+      )}
 
       <Image
         src={`/api/images/enemies/${enemy.battlerName}`}
@@ -131,12 +137,30 @@ export default function Enemy() {
                 return null;
               }
 
-              const { category, item } = getItemData(drop.name);
+              const data = getItemData(drop.name);
+              const { category } = data;
+
+              if (category === "unknown") {
+                return (
+                  <li className="item" key={i}>
+                    <Image
+                      alt={drop.name}
+                      className="item-image"
+                      height="100"
+                      src="/api/images/items/93"
+                      width="100"
+                    />
+                    {drop.name} (unknown item)
+                  </li>
+                );
+              }
+
+              const { item } = data;
               const onClick = item
                 ? () => router.push(`/${category}/${item.id}`)
                 : undefined;
               return (
-                <li className="item" key={i} onClick={onClick}>
+                <li className="item clickable" key={i} onClick={onClick}>
                   {item && (
                     <>
                       <Image
