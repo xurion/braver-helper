@@ -19,6 +19,8 @@ export default function RootLayout({
         <nav>
           <Link href="/">Home</Link>
           <Link href="/enemies">Enemies</Link>
+          <Link href="/weapons">Weapons</Link>
+          <Link href="/armors">Armors</Link>
           <Link href="/items">Items</Link>
         </nav>
         <div className="main-wrapper">{children}</div>
