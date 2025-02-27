@@ -2,14 +2,12 @@
 
 import { useParams } from "next/navigation";
 import Image from "next/image";
-// import { useRouter } from "next/navigation";
 
 import items from "@/game/www/data/Items.json";
-import "./items.css";
+import styles from "./items.module.css";
 
 export default function Item() {
   const params = useParams();
-  // const router = useRouter();
 
   if (!params.id) {
     return <p>Item not found</p>;
@@ -23,7 +21,7 @@ export default function Item() {
   }
 
   return (
-    <div className="item-wrapper">
+    <div className={styles["item-wrapper"]}>
       <h1>{item.name}</h1>
 
       <Image
@@ -31,10 +29,10 @@ export default function Item() {
         alt={item.name}
         width="64"
         height="64"
-        className="item-image"
+        className={styles["item-image"]}
       />
 
-      <p className="item-description">{item.description}</p>
+      <p className={styles["item-description"]}>{item.description}</p>
     </div>
   );
 }

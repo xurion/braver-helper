@@ -8,7 +8,7 @@ import enemies from "@/game/www/data/Enemies.json";
 import items from "@/game/www/data/Items.json";
 import armors from "@/game/www/data/Armors.json";
 import weapons from "@/game/www/data/Weapons.json";
-import "./enemies.css";
+import styles from "./enemies.module.css";
 
 function parseEnemyNote(note: string) {
   const isInBestiary = note.includes("<book:no>") === false;
@@ -106,10 +106,10 @@ export default function Enemy() {
   const parsedNote = parseEnemyNote(enemy.note);
 
   return (
-    <div className="enemy-wrapper">
+    <div className={styles["enemy-wrapper"]}>
       <h1>{enemy.name}</h1>
 
-      <p className="enemy-level">
+      <p className={styles["enemy-level"]}>
         Lv.{parsedNote.minLevel}
         {parsedNote.minLevel !== parsedNote.maxLevel
           ? ` - ${parsedNote.maxLevel}`
@@ -117,7 +117,7 @@ export default function Enemy() {
       </p>
 
       {parsedNote.description && (
-        <p className="enemy-description">{parsedNote.description}</p>
+        <p className={styles["enemy-description"]}>{parsedNote.description}</p>
       )}
 
       <Image
@@ -125,13 +125,13 @@ export default function Enemy() {
         alt={enemy.name}
         width="100"
         height="100"
-        className="enemy-image"
+        className={styles["enemy-image"]}
       />
 
-      <div className="section">
+      <div className={styles["section"]}>
         <h2>Drops</h2>
         {parsedNote.drops ? (
-          <ul className="items">
+          <ul className={styles["items"]}>
             {parsedNote.drops.map((drop, i) => {
               if (!drop.name) {
                 return null;
@@ -142,10 +142,10 @@ export default function Enemy() {
 
               if (category === "unknown") {
                 return (
-                  <li className="item" key={i}>
+                  <li className={styles["item"]} key={i}>
                     <Image
                       alt={drop.name}
-                      className="item-image"
+                      className={styles["item-image"]}
                       height="100"
                       src="/api/images/items/93"
                       width="100"
@@ -160,7 +160,11 @@ export default function Enemy() {
                 ? () => router.push(`/${category}/${item.id}`)
                 : undefined;
               return (
-                <li className="item clickable" key={i} onClick={onClick}>
+                <li
+                  className={`${styles.item} ${styles.clickable}`}
+                  key={i}
+                  onClick={onClick}
+                >
                   {item && (
                     <>
                       <Image
@@ -183,44 +187,44 @@ export default function Enemy() {
         {enemy.gold > 0 && <div>Gil: {enemy.gold}</div>}
       </div>
 
-      <div className="section">
+      <div className={styles.section}>
         <h2>Steal</h2>
 
         {parsedNote.steal ? (
-          <ul className="items">
-            <li className="item">{parsedNote.steal}</li>
+          <ul className={styles.items}>
+            <li className={styles.item}>{parsedNote.steal}</li>
           </ul>
         ) : (
           "None"
         )}
       </div>
 
-      <div className="section">
+      <div className={styles.section}>
         <h2>Stats</h2>
-        <ul className="stats">
-          <li className="stat">
-            <span className="key">HP:</span> {enemy.params[0]}
+        <ul className={styles.stats}>
+          <li className={styles.stat}>
+            <span className={styles.key}>HP:</span> {enemy.params[0]}
           </li>
-          <li className="stat">
-            <span className="key">MP:</span> {enemy.params[1]}
+          <li className={styles.stat}>
+            <span className={styles.key}>MP:</span> {enemy.params[1]}
           </li>
-          <li className="stat">
-            <span className="key">STR:</span> {enemy.params[2]}
+          <li className={styles.stat}>
+            <span className={styles.key}>STR:</span> {enemy.params[2]}
           </li>
-          <li className="stat">
-            <span className="key">VIT:</span> {enemy.params[3]}
+          <li className={styles.stat}>
+            <span className={styles.key}>VIT:</span> {enemy.params[3]}
           </li>
-          <li className="stat">
-            <span className="key">MND:</span> {enemy.params[5]}
+          <li className={styles.stat}>
+            <span className={styles.key}>MND:</span> {enemy.params[5]}
           </li>
-          <li className="stat">
-            <span className="key">INT:</span> {enemy.params[4]}
+          <li className={styles.stat}>
+            <span className={styles.key}>INT:</span> {enemy.params[4]}
           </li>
-          <li className="stat">
-            <span className="key">AGI:</span> {enemy.params[6]}
+          <li className={styles.stat}>
+            <span className={styles.key}>AGI:</span> {enemy.params[6]}
           </li>
-          <li className="stat">
-            <span className="key">LUK:</span> {enemy.params[7]}
+          <li className={styles.stat}>
+            <span className={styles.key}>LUK:</span> {enemy.params[7]}
           </li>
         </ul>
         <p className="text-xs">
