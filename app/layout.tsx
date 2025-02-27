@@ -22,6 +22,7 @@ export default function RootLayout({
           <Link href="/weapons">Weapons</Link>
           <Link href="/armors">Armors</Link>
           <Link href="/items">Items</Link>
+          <Link href="/gear-finder">Gear Finder</Link>
         </nav>
         <div className="main-wrapper">{children}</div>
       </body>
