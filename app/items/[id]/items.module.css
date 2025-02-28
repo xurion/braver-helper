@@ -9,3 +9,8 @@
 .item-description {
   @apply mt-2 mb-4 pr-40;
 }
+
+.description-icon {
+  @apply mr-1;
+  @apply inline-block;
+}
